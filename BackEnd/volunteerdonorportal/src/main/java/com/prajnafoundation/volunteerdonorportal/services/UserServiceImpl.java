@@ -51,7 +51,7 @@ public class UserServiceImpl implements UserService{
             logMessage = "No user exist with id " + id +"!";
             return new UserResponseObj(logMessage);
         }
-        logMessage = "Successfully found "+ user.size()+ " user with Id: "+ id;
+        logMessage = "Successfully found the user with Id: "+ id;
         return new UserResponseObj(user, logMessage);
     }
 
@@ -70,7 +70,7 @@ public class UserServiceImpl implements UserService{
             logMessage = "No user exist with email " + email + "!";
             return new UserResponseObj(logMessage);
         }
-        logMessage = "Successfully found " + user.size() + " user with Email: "+ email;
+        logMessage = "Successfully found the user with Email: "+ email;
         return new UserResponseObj(user, logMessage);
     }
 
@@ -83,14 +83,12 @@ public class UserServiceImpl implements UserService{
             return new UserResponseObj(logMessage);
         }
 
-        // User with the given email exists, now check the password
         User user = userOptional.get();
         if (!user.getPassword().equals(password)) {
             String logMessage = "Incorrect Credentials: Password";
             return new UserResponseObj(logMessage);
         }
 
-        // Both email and password are correct
         String logMessage = "Success!";
         return new UserResponseObj(logMessage);
     }
@@ -107,7 +105,6 @@ public class UserServiceImpl implements UserService{
             return new UserResponseObj(logMessage);
         }
 
-        // Create a new user profile
         User user = new User();
         user.setEmail(email);
         user.setPassword(password);

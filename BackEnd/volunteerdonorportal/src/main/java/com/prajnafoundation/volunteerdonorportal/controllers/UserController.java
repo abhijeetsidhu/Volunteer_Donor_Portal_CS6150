@@ -16,16 +16,6 @@ public class UserController {
         this.userService = userService;
     }
 
-//    @GetMapping
-//    public UserResponseObj getAllUsers() {
-//        return userService.getAllUsers();
-//    }
-
-//    @GetMapping("/{id}")
-//    public UserResponseObj getUserById(@PathVariable Long id) {
-//        return userService.getUserById(id);
-//    }
-
     @GetMapping
     public UserResponseObj getUsers(@RequestParam(name = "id", required = false) Long id,
                                     @RequestParam(name = "email", required = false) String email) {
@@ -80,9 +70,6 @@ public class UserController {
         return userService.updateUser(userId, email, password, phoneNumber, role, name, emailNotification, whatsappNotification);
     }
 
-
-
-    // Endpoint to delete a user by ID
     @DeleteMapping("/{id}")
     public UserResponseObj deleteUser(@PathVariable Long id) {
         return userService.deleteUser(id);
