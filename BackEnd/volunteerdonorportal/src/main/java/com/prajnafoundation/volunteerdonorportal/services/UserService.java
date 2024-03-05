@@ -9,11 +9,15 @@ public interface UserService {
 
     UserResponseObj getUserById(Long id);
 
-    String createUser(String email, String password, String phoneNumber,
-                    String role, String name);
+    UserResponseObj getUserByEmail(String email);
 
-    String updateUser(Long id, String email, String password,
-                      String phoneNumber, String role, String name);
+    UserResponseObj authenticateUser(String email, String password);
 
-    String deleteUser(Long id);
+    UserResponseObj createUser(String email, String password, String phoneNumber, String role,
+                      String name, boolean emailNotification, boolean whatsappNotification);
+
+    UserResponseObj updateUser(Long id, String email, String password, String phoneNumber, String role,
+               String name, Boolean emailNotification, Boolean whatsappNotification);
+
+    UserResponseObj deleteUser(Long id);
 }

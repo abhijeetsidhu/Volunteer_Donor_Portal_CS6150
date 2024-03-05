@@ -16,37 +16,75 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping
-    public UserResponseObj getAllUsers() {
-        return userService.getAllUsers();
-    }
-
-    @GetMapping("/{id}")
-    public UserResponseObj getUserById(@PathVariable Long id) {
-        return userService.getUserById(id);
-    }
-
-//    @GetMapping("/login")
-//    public boolean login(@RequestParam String email, @RequestParam String password) {
-//        return userService.validatePassword(email, password);
+//    @GetMapping
+//    public UserResponseObj getAllUsers() {
+//        return userService.getAllUsers();
 //    }
 
-    @PostMapping
-    public String createUser(@RequestParam String email, @RequestParam String password, @RequestParam String phoneNumber,
-                             @RequestParam String role, @RequestParam String name) {
-        return userService.createUser(email, password, phoneNumber, role, name);
+//    @GetMapping("/{id}")
+//    public UserResponseObj getUserById(@PathVariable Long id) {
+//        return userService.getUserById(id);
+//    }
+
+    @GetMapping
+    public UserResponseObj getUsers(@RequestParam(name = "id", required = false) Long id,
+                                    @RequestParam(name = "email", required = false) String email) {
+        if (id == null && email == null) {
+            // Handle the case where no parameters are provided
+            return userService.getAllUsers();
+        } else {
+            UserResponseObj response = userService.getUserById(id);
+            if (response.getUsers() != null) {
+                return response;
+            }
+            response = userService.getUserByEmail(email);
+            if (response.getUsers() != null) {
+                return response;
+            }
+
+            StringBuilder logMessage = new StringBuilder("No such user exist with ");
+
+            if(id != null && email != null){
+                logMessage.append("id: ").append(id).append(" or " + "Email: ").append(email);
+            } else if (id != null && email == null) {
+                logMessage.append("id: ").append(id);
+            }
+            else{
+                logMessage.append("Email: ").append(email);
+            }
+            return new UserResponseObj(logMessage.toString());
+        }
     }
 
-    // Endpoint to update an existing user by ID
-    @PutMapping
-    public String updateUser(@RequestParam Long userId, @RequestParam String email, @RequestParam String password,
-                             @RequestParam String phoneNumber, @RequestParam String role, @RequestParam String name) {
-        return userService.updateUser(userId, email, password, phoneNumber, role, name);
+    @GetMapping("/login")
+    public UserResponseObj authenticateUser(@RequestParam String email, @RequestParam String password) {
+        return userService.authenticateUser(email, password);
     }
+
+    @PostMapping
+    public UserResponseObj createUser(@RequestParam String email, @RequestParam String password, @RequestParam String phoneNumber,
+                             @RequestParam String role, @RequestParam String name,
+                             @RequestParam(required = false, defaultValue = "true") boolean emailNotification,
+                             @RequestParam(required = false, defaultValue = "true") boolean whatsappNotification) {
+        return userService.createUser(email, password, phoneNumber, role, name, emailNotification, whatsappNotification);
+    }
+
+    @PutMapping
+    public UserResponseObj updateUser(@RequestParam Long userId, @RequestParam(required = false) String email,
+                             @RequestParam(required = false) String password,
+                             @RequestParam(required = false) String phoneNumber,
+                             @RequestParam(required = false) String role,
+                             @RequestParam(required = false) String name,
+                             @RequestParam(required = false) Boolean emailNotification,
+                             @RequestParam(required = false) Boolean whatsappNotification) {
+        return userService.updateUser(userId, email, password, phoneNumber, role, name, emailNotification, whatsappNotification);
+    }
+
+
 
     // Endpoint to delete a user by ID
     @DeleteMapping("/{id}")
-    public String deleteUser(@PathVariable Long id) {
+    public UserResponseObj deleteUser(@PathVariable Long id) {
         return userService.deleteUser(id);
     }
 }

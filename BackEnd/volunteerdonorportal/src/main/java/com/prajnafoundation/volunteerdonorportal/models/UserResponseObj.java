@@ -3,14 +3,20 @@ package com.prajnafoundation.volunteerdonorportal.models;
 import com.prajnafoundation.volunteerdonorportal.entities.User;
 
 
+import java.util.Date;
 import java.util.List;
 
-public class UserResponseObj {
+public class UserResponseObj extends LogMessage{
 
     private List<UserObj> users = null;
 
-    public UserResponseObj(List<User> users) {
+    public UserResponseObj(List<User> users, String logMessage) {
+        super(logMessage);
         this.users = users.stream().map(UserObj::new).toList();
+    }
+
+    public UserResponseObj(String logMessage) {
+        super(logMessage);
     }
 
     public List<UserObj> getUsers() {
@@ -29,14 +35,20 @@ public class UserResponseObj {
         String password;
         String phoneNumber;
         String role;
+        Date dob;
+        boolean emailNotification;
+        boolean whatsappNotification;
 
         public UserObj (User user) {
             this.userId = user.getUserId();
             name = user.getName();
             email = user.getEmail();
-            password = "********";
+            password = user.getPassword();
             phoneNumber = user.getPhoneNumber();
             role = user.getRole();
+            dob = user.getDob();
+            emailNotification = user.optedInForEmailNotification();
+            whatsappNotification = user.optedInForWhatsappNotification();
         }
 
         public Long getUserId() {
@@ -61,6 +73,18 @@ public class UserResponseObj {
 
         public String getRole() {
             return role;
+        }
+
+        public Date getDob() {
+            return dob;
+        }
+
+        public boolean isEmailNotification() {
+            return emailNotification;
+        }
+
+        public boolean isWhatsappNotification() {
+            return whatsappNotification;
         }
     }
 }

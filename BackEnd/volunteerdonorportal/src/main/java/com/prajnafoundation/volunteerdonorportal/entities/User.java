@@ -1,7 +1,7 @@
 package com.prajnafoundation.volunteerdonorportal.entities;
 
 import jakarta.persistence.*;
-
+import java.util.Date;
 @Entity
 @Table(name = "user_table")
 public class User {
@@ -23,15 +23,25 @@ public class User {
     @Column(name = "role")
     private String role;
 
+    @Column(name = "dob")
+    private Date dob;
+
     @Column(name = "name")
     private String name;
 
+    @Column(name = "email_notification")
+    private boolean emailNotification;
 
+    @Column(name = "whatsapp_notification")
+    private boolean whatsappNotification;
 
     // Getters and setters
-
     public Long getUserId() {
         return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
     public String getEmail() {
@@ -66,6 +76,14 @@ public class User {
         this.role = role;
     }
 
+    public Date getDob() {
+        return dob;
+    }
+
+    public void setDob(Date dob) {
+        this.dob = dob;
+    }
+
     public String getName() {
         return name;
     }
@@ -74,5 +92,20 @@ public class User {
         this.name = name;
     }
 
+    public boolean optedInForEmailNotification() {
+        return emailNotification;
+    }
+
+    public void setEmailNotification(boolean emailNotification) {
+        this.emailNotification = emailNotification;
+    }
+
+    public boolean optedInForWhatsappNotification() {
+        return whatsappNotification;
+    }
+
+    public void setWhatsappNotification(boolean whatsappNotification) {
+        this.whatsappNotification = whatsappNotification;
+    }
 }
 
