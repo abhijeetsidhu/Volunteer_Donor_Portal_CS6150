@@ -263,7 +263,6 @@ public class UserServiceImpl implements UserService{
 
         Optional<User> userOptional = userRepository.findById(id);
 
-
         if (userOptional.isPresent()) {
             User user = userOptional.get();
             String name = user.getName();
