@@ -1,5 +1,6 @@
 package com.prajnafoundation.volunteerdonorportal.entities;
 
+import com.prajnafoundation.volunteerdonorportal.models.UserRole;
 import jakarta.persistence.*;
 import java.util.Date;
 @Entity
@@ -20,8 +21,9 @@ public class User {
     @Column(name = "phone_number")
     private String phoneNumber;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "role")
-    private String role;
+    private UserRole role;
 
     @Column(name = "dob")
     private Date dob;
@@ -68,14 +70,6 @@ public class User {
         this.phoneNumber = phoneNumber;
     }
 
-    public String getRole() {
-        return role;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
-    }
-
     public Date getDob() {
         return dob;
     }
@@ -106,6 +100,22 @@ public class User {
 
     public void setWhatsappNotification(boolean whatsappNotification) {
         this.whatsappNotification = whatsappNotification;
+    }
+
+    public String getRole() {
+        return role.name();
+    }
+
+    public void setRole(UserRole role) {
+        this.role = role;
+    }
+
+    public boolean isEmailNotification() {
+        return emailNotification;
+    }
+
+    public boolean isWhatsappNotification() {
+        return whatsappNotification;
     }
 }
 

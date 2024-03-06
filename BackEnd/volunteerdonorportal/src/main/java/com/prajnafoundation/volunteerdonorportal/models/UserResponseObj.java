@@ -2,11 +2,10 @@ package com.prajnafoundation.volunteerdonorportal.models;
 
 import com.prajnafoundation.volunteerdonorportal.entities.User;
 
-
 import java.util.Date;
 import java.util.List;
 
-public class UserResponseObj extends LogMessage{
+public class UserResponseObj extends LogMessage {
 
     private List<UserObj> users = null;
 
@@ -27,7 +26,6 @@ public class UserResponseObj extends LogMessage{
         this.users = users;
     }
 
-
     private static class UserObj {
         Long userId;
         String name;
@@ -39,16 +37,16 @@ public class UserResponseObj extends LogMessage{
         boolean emailNotification;
         boolean whatsappNotification;
 
-        public UserObj (User user) {
+        public UserObj(User user) {
             this.userId = user.getUserId();
-            name = user.getName();
-            email = user.getEmail();
-            password = user.getPassword();
-            phoneNumber = user.getPhoneNumber();
-            role = user.getRole();
-            dob = user.getDob();
-            emailNotification = user.optedInForEmailNotification();
-            whatsappNotification = user.optedInForWhatsappNotification();
+            this.name = user.getName();
+            this.email = user.getEmail();
+            this.password = user.getPassword();
+            this.phoneNumber = user.getPhoneNumber();
+            this.role = user.getRole();
+            this.dob = user.getDob();
+            this.emailNotification = user.optedInForEmailNotification();
+            this.whatsappNotification = user.optedInForWhatsappNotification();
         }
 
         public Long getUserId() {
