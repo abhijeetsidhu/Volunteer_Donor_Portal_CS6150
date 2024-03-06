@@ -28,8 +28,8 @@ public class DonationTile {
     @Column(name = "end_date")
     private Date endDate;
 
-    @Column(name = "status", length = 20, columnDefinition = "varchar(20) default 'Active'")
-    private String status;
+    @Column(name = "is_active")
+    private boolean isActive;
 
     // Getters and setters
     public Long getDonationTileId() {
@@ -80,11 +80,11 @@ public class DonationTile {
         this.endDate = endDate;
     }
 
-    public String getStatus() {
-        return status;
+    public boolean isActive() {
+        return isActive;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
+    public void setActive(boolean active) {
+        isActive = active;
     }
 }
