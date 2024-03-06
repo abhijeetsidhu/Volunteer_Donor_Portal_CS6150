@@ -90,7 +90,8 @@ public class UserServiceImpl implements UserService{
         }
 
         String logMessage = "Success!";
-        return new UserResponseObj(logMessage);
+        List<User> userObjList = userOptional.map(Collections::singletonList).orElseGet(Collections::emptyList);
+        return new UserResponseObj(userObjList, logMessage);
     }
 
     @Override
