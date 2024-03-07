@@ -43,7 +43,7 @@ CREATE TABLE donation_tile_table (
     target_amount DECIMAL(10, 2) NOT NULL,
     start_date DATE,
     end_date DATE,
-    status VARCHAR(20) DEFAULT 'Active' -- Assuming 'Active', 'Completed', 'Closed' as possible statuses
+    isActive BOOLEAN
 );
 
 -- Mock data
@@ -124,13 +124,13 @@ VALUES
 
   (5, 'user14@gmail.com'); -- Event 5, User 14
 
-INSERT INTO donation_tile_table (donation_title, description, target_amount, start_date, end_date, status)
+INSERT INTO donation_tile_table (donation_title, description, target_amount, start_date, end_date, isActive)
 VALUES
-	('Education Fund', 'Support education initiatives for underprivileged children.', 5000.00, '2023-12-20', '2024-05-31', 'Active'),
-    ('Food Drive', 'Contribute to providing meals for the homeless.', 3000.00, '2024-01-01', '2024-06-30', 'Active'),
-    ('General Donation', 'Make a general donation to support various causes.', 10000.00, '2024-03-15', '2024-06-15', 'Active'),
-    ('Healthcare Support', 'Help in funding healthcare services for those in need.', 8000.00, '2024-04-15', '2024-07-31', 'Active'),
-    ('Housing Support', 'Support initiatives for a housing for needy in slum aread.', 60000.00, '2024-01-20', '2024-06-20', 'Active');
+	('Education Fund', 'Support education initiatives for underprivileged children.', 5000.00, '2023-12-20', '2024-05-31', true),
+    ('Food Drive', 'Contribute to providing meals for the homeless.', 3000.00, '2024-01-01', '2024-06-30', true),
+    ('General Donation', 'Make a general donation to support various causes.', 10000.00, '2024-03-15', '2024-06-15', true),
+    ('Healthcare Support', 'Help in funding healthcare services for those in need.', 8000.00, '2024-04-15', '2024-07-31', true),
+    ('Housing Support', 'Support initiatives for a housing for needy in slum aread.', 60000.00, '2024-01-20', '2024-06-20', false);
 
 
 -- Retreive data

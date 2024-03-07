@@ -3,7 +3,10 @@ package com.prajnafoundation.volunteerdonorportal.controllers;
 import com.prajnafoundation.volunteerdonorportal.models.UserResponseObj;
 import com.prajnafoundation.volunteerdonorportal.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Date;
 
 
 @RestController
@@ -53,10 +56,10 @@ public class UserController {
 
     @PostMapping
     public UserResponseObj createUser(@RequestParam String email, @RequestParam String password, @RequestParam String phoneNumber,
-                             @RequestParam String role, @RequestParam String name,
-                             @RequestParam(required = false, defaultValue = "true") boolean emailNotification,
-                             @RequestParam(required = false, defaultValue = "true") boolean whatsappNotification) {
-        return userService.createUser(email, password, phoneNumber, role, name, emailNotification, whatsappNotification);
+                             @RequestParam String role, @RequestParam String name, @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date dob,
+                             @RequestParam(required = false, defaultValue = "false") boolean emailNotification,
+                             @RequestParam(required = false, defaultValue = "false") boolean whatsappNotification) {
+        return userService.createUser(email, password, phoneNumber, role, name, dob, emailNotification, whatsappNotification);
     }
 
     @PutMapping
