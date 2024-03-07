@@ -10,13 +10,6 @@ function DonorPage() {
     { id: 3, category: 'Environment', description: 'Contribute to environmental conservation efforts' }
   ];
 
-  // Dummy data for donation acknowledgement
-  const donationAcknowledgement = [
-    { id: 1, name: 'John Doe', amount: '$50' },
-    { id: 2, name: 'Jane Smith', amount: '$100' },
-    { id: 3, name: 'Michael Johnson', amount: '$75' }
-  ];
-
   // State for controlling the modal
   const [openModal, setOpenModal] = useState(false);
   // State to hold the selected donation category
@@ -64,24 +57,6 @@ function DonorPage() {
               </Grid>
             ))}
           </Grid>
-        </section>
-
-        {/* Donation Acknowledgement Section */}
-        <br />
-        <section>
-          <Typography variant="h4" gutterBottom>
-            Donation Acknowledgement
-          </Typography>
-          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-            {donationAcknowledgement.map(donation => (
-              <Card key={donation.id} style={{ width: '30%', marginBottom: '20px' }}>
-                <CardContent>
-                  <Typography variant="h6">{donation.name}</Typography>
-                  <Typography variant="body1">Amount: {donation.amount}</Typography>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
         </section>
       </Container>
       
