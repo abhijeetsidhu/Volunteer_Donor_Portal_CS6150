@@ -58,6 +58,53 @@ function DonorPage() {
             ))}
           </Grid>
         </section>
+        
+        {/* Donation Stories Section */}
+        <section style={{ marginTop: '30px' }}>
+          <Typography variant="h4" gutterBottom>
+            Our Impact Stories
+          </Typography>
+          {/* Add your stories or descriptions here */}
+          <Typography variant="body1" gutterBottom>
+            Here are some stories about the impact of your donations...
+          </Typography>
+        </section>
+
+        {/* Influential People and Shareable Links Section */}
+        <section style={{ marginTop: '30px' }}>
+          <Typography variant="h4" gutterBottom>
+            Influential Donors
+          </Typography>
+          <Grid container spacing={3}>
+            {/* Example of showcasing influential people and their donations */}
+            <Grid item xs={12} sm={6} md={4}>
+              <Card>
+                <CardContent>
+                  <Typography variant="h6">John Doe</Typography>
+                  <Typography variant="body3">Little about John Doe</Typography>
+                  <Typography variant="body1">Donated $1000 to Education</Typography>
+                  {/* Generate a shareable link to the donation page */}
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={() => {
+                      // Implement logic to generate shareable link
+                      const donationLink = "https://example.com/donate";
+                      // Copy the link to the clipboard
+                      navigator.clipboard.writeText(donationLink)
+                        .then(() => alert('Link copied to clipboard'))
+                        .catch(err => console.error('Failed to copy link: ', err));
+                    }}
+                  >
+                    Share Donation Link
+                  </Button>
+                </CardContent>
+              </Card>
+            </Grid>
+            {/* Add more influential people and their donations as needed */}
+          </Grid>
+        </section>
+
       </Container>
       
       {/* Donation Confirmation Modal */}

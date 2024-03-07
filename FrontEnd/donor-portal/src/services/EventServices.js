@@ -5,7 +5,7 @@ const BASE_URL = 'http://localhost:8080';
 const EventServices = {
   getAllEvents: async () => {
     try {
-      const response = await axios.get(`${BASE_URL}/events`);
+      const response = await axios.get(`${BASE_URL}/event`);
       return response.data;
     } catch (error) {
       console.error('Error fetching events:', error);
@@ -15,7 +15,9 @@ const EventServices = {
 
   createEvent: async (eventData) => {
     try {
-      const response = await axios.post(`${BASE_URL}/events`, eventData);
+      const response = await axios.post(`${BASE_URL}/event`, null, {
+        params: eventData
+      });
       return response.data;
     } catch (error) {
       console.error('Error creating event:', error);
@@ -25,23 +27,30 @@ const EventServices = {
 
   updateEvent: async (eventId, eventData) => {
     try {
-      const response = await axios.put(`${BASE_URL}/events/${eventId}`, eventData);
+      const response = await axios.put(`${BASE_URL}/event`, null, {
+        params: eventData
+      });
       return response.data;
     } catch (error) {
       console.error('Error updating event:', error);
       throw error;
     }
-  },
+  },  
 
   deleteEvent: async (eventId) => {
     try {
-      const response = await axios.delete(`${BASE_URL}/events/${eventId}`);
+      const response = await axios.delete(`${BASE_URL}/event`, {
+        params: {
+          eventId: eventId
+        }
+      });
       return response.data;
     } catch (error) {
       console.error('Error deleting event:', error);
       throw error;
     }
   }
+  
 };
 
 export default EventServices;

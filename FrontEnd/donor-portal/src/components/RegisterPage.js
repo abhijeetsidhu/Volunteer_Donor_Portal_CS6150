@@ -4,12 +4,25 @@ import Header from './Header';
 import { registerUser } from '../services/UserServices';
 import { useNavigate } from 'react-router-dom'; // Import useNavigate
 import { AES, enc } from 'crypto-js';
+import { PhoneInput } from 'react-international-phone';
+import 'react-international-phone/style.css';
+import { PhoneNumberUtil } from 'google-libphonenumber';
+
+const phoneUtil = PhoneNumberUtil.getInstance();
+
+const isPhoneValid = (phone) => {
+  try {
+    return phoneUtil.isValidNumber(phoneUtil.parseAndKeepRawInput(phone));
+  } catch (error) {
+    return false;
+  }
+};
 
 function RegisterPage() {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
-    // dob: '',
+    dob: '',
     role: 'MEMBER',
     phoneNumber: '',
     password: '',
@@ -45,6 +58,14 @@ function RegisterPage() {
     }
   };
 
+  const handlePhoneChange = (value) => {
+    // Update the phone number in formData
+    setFormData(prevState => ({
+      ...prevState,
+      phoneNumber: value
+    }));
+  };
+
   const handleSubmit = async () => {
     // Clear previous errors
     setError('');
@@ -63,9 +84,8 @@ function RegisterPage() {
     }
   
     // Validate phone number format
-    const phoneRegex = /^\d{10}$/;
-    if (!phoneRegex.test(formData.phoneNumber)) {
-      setError('Please enter a valid 10-digit phone number.');
+    if (!isPhoneValid(formData.phoneNumber)) {
+      setError('Please enter a valid phone number.');
       return;
     }
   
@@ -78,7 +98,7 @@ function RegisterPage() {
   
       const response = await registerUser(updatedFormData);
       // Check if the response indicates successful registration
-      if (response.logMessage.includes("User profile created")) {
+      if (response.logMessage.includes("MEMBER profile created")) {
         // Set local storage upon successful sign up
         localStorage.setItem('isLoggedIn', true);
         localStorage.setItem('userRole', 'MEMBER'); // Assuming 'MEMBER' is a string value
@@ -146,13 +166,18 @@ function RegisterPage() {
             />
           </Grid>
           <Grid item xs={12} sm={6}>
-            <TextField
+            {/* <TextField
               id="phoneNumber"
               label="Phone Number"
               variant="outlined"
               fullWidth
               value={formData.phoneNumber}
               onChange={handleChange}
+            /> */}
+            <PhoneInput
+              placeholder="Enter phone number"
+              value={formData.phoneNumber}
+              onChange={handlePhoneChange}
             />
           </Grid>
           <Grid item xs={12}>

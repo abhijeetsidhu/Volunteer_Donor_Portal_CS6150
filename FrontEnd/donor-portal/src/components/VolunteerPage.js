@@ -1,49 +1,62 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Header from './Header';
 import { Container, Typography, Card, CardContent, Button, Modal, TextField, IconButton, Grid } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
+import EventServices from '../services/EventServices'; // Import EventServices module
 
 function VolunteerPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [eventDetails, setEventDetails] = useState({
-    id: null,
-    name: '',
+    eventId: '', // New field
+    eventName: '',
     description: '',
     location: '',
-    dateTime: ''
+    date: ''
   });
 
-  // Dummy data for upcoming events
-  const [upcomingEvents, setUpcomingEvents] = useState([
-    { id: 1, name: 'Event 1', dateTime: '2024-03-05T10:00:00', location: 'Location 1' },
-    { id: 2, name: 'Event 2', dateTime: '2024-03-06T12:00:00', location: 'Location 2' },
-    { id: 3, name: 'Event 3', dateTime: '2024-03-07T14:00:00', location: 'Location 3' }
-  ]);
+  const [upcomingEvents, setUpcomingEvents] = useState([]);
 
-  // Dummy data for volunteer acknowledgement
   const volunteerAcknowledgement = [
     { id: 1, name: 'John Doe', role: 'Volunteer' },
     { id: 2, name: 'Jane Smith', role: 'Volunteer' },
     { id: 3, name: 'Michael Johnson', role: 'Volunteer' }
   ];
 
-  // Hardcoded user role for testing purposes
   const userRole = 'Admin'; // or 'Staff'
+
+  useEffect(() => {
+    fetchEvents();
+  }, []);
+
+  const fetchEvents = async () => {
+    try {
+      const events = await EventServices.getAllEvents();
+      setUpcomingEvents(events.events);
+    } catch (error) {
+      console.error('Error fetching events:', error);
+    }
+  };
 
   const handleOpenModal = (event) => {
     setIsModalOpen(true);
-    setEventDetails(event);
+    setEventDetails({
+      eventId: event.eventId, // Set eventId
+      eventName: event.eventName,
+      description: event.description,
+      location: event.location,
+      date: event.date
+    });
   };
 
   const handleCloseModal = () => {
     setIsModalOpen(false);
     setEventDetails({
-      id: null,
-      name: '',
+      eventId: '', // Reset eventId
+      eventName: '',
       description: '',
       location: '',
-      dateTime: ''
+      date: ''
     });
   };
 
@@ -55,32 +68,48 @@ function VolunteerPage() {
     }));
   };
 
-  const handleEditEvent = () => {
-    // Handle event editing logic here, e.g., send data to the backend
-    console.log('Event edited:', eventDetails);
-    // Close the modal after event editing
-    setIsModalOpen(false);
-    // Reset event details
-    setEventDetails({
-      id: null,
-      name: '',
-      description: '',
-      location: '',
-      dateTime: ''
-    });
+  // Inside handleEditEvent function where you create or update an event
+  const handleEditEvent = async () => {
+    try {
+      // Convert the date to ISO string format
+      const isoDate = new Date(eventDetails.date).toISOString();
+
+      if (eventDetails.id) {
+        // If it's an update, send eventId along with other details
+        const response = await EventServices.updateEvent(eventDetails.id, {
+          ...eventDetails,
+          date: isoDate // Use the ISO format date
+        });
+        console.log('Event updated:', response);
+      } else {
+        // If it's a new event, create it with ISO format date
+        const response = await EventServices.createEvent({
+          ...eventDetails,
+          date: isoDate // Use the ISO format date
+        });
+        console.log('Event created:', response);
+      }
+      handleCloseModal();
+      fetchEvents(); // Refetch events after creation or update
+    } catch (error) {
+      console.error('Error creating/editing event:', error);
+    }
   };
 
-  const handleDeleteEvent = (eventId) => {
-    // Handle event deletion logic here, e.g., send request to the backend
-    console.log('Event deleted:', eventId);
-    // Update the upcoming events list by filtering out the deleted event
-    setUpcomingEvents(prevEvents => prevEvents.filter(event => event.id !== eventId));
+  const handleDeleteEvent = async (eventId) => {
+    try {
+      console.log('Event deleted:', eventId);
+      const response = await EventServices.deleteEvent(eventId);
+      console.log('Event deletion response:', response);
+      setUpcomingEvents(prevEvents => prevEvents.filter(event => event.eventId !== eventId));
+    } catch (error) {
+      console.error('Error deleting event:', error);
+    }
   };
 
   return (
     <div>
       <Header />
-
       <Container maxWidth="lg">
         <br />
         {/* Upcoming Events Section */}
@@ -90,33 +119,33 @@ function VolunteerPage() {
               Upcoming Events
             </Typography>
             {(userRole === 'Admin' || userRole === 'Staff') && (
-              <Button variant="contained" color="primary" onClick={handleOpenModal} style={{ marginBottom: '20px' }}>
+              <Button variant="contained" color="primary" onClick={() => setIsModalOpen(true)} style={{ marginBottom: '20px' }}>
                 Create Event
               </Button>
             )}
           </div>
-          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-            {upcomingEvents.map(event => (
-              <Card key={event.id} style={{ width: '30%', marginBottom: '20px', position: 'relative' }}>
-                <CardContent>
-                  <Grid container justifyContent="space-between" alignItems="center">
-                    <Typography variant="h6">{event.name}</Typography>
-                    <div>
+          <Grid container spacing={3}>
+            {upcomingEvents.map((event, index) => (
+              <Grid item xs={12} sm={6} md={4} key={index}>
+                <Card style={{ marginBottom: '20px', position: 'relative' }}>
+                  <CardContent>
+                    <Typography variant="h6">{event.eventName}</Typography>
+                    <div style={{ position: 'absolute', top: '0', right: '0' }}>
                       <IconButton onClick={() => handleOpenModal(event)} aria-label="edit">
                         <EditIcon />
                       </IconButton>
-                      <IconButton onClick={() => handleDeleteEvent(event.id)} aria-label="delete">
+                      <IconButton onClick={() => handleDeleteEvent(event.eventId)} aria-label="delete">
                         <DeleteIcon />
                       </IconButton>
                     </div>
-                  </Grid>
-                  <Typography variant="body1">Date & Time: {new Date(event.dateTime).toLocaleString()}</Typography>
-                  <Typography variant="body1">Location: {event.location}</Typography>
-                  <Button variant="contained" color="primary">Sign Up</Button>
-                </CardContent>
-              </Card>
+                    <Typography variant="body1">Date & Time: {new Date(event.date).toLocaleString()}</Typography>
+                    <Typography variant="body1">Location: {event.location}</Typography>
+                    <Button variant="contained" color="primary">Sign Up</Button>
+                  </CardContent>
+                </Card>
+              </Grid>
             ))}
-          </div>
+          </Grid>
         </section>
 
         {/* Volunteer Acknowledgement Section */}
@@ -147,14 +176,14 @@ function VolunteerPage() {
       >
         <Container maxWidth="sm" sx={{ marginTop: '20vh', bgcolor: 'background.paper', padding: 4 }}>
           <Typography variant="h5" id="event-creation-modal" gutterBottom>
-            {eventDetails.id ? 'Edit Event' : 'Create Event'}
+            {eventDetails.eventId ? 'Edit Event' : 'Create Event'}
           </Typography>
           <TextField
-            id="name"
+            id="eventName"
             label="Event Name"
             variant="outlined"
             fullWidth
-            value={eventDetails.name}
+            value={eventDetails.eventName}
             onChange={handleInputChange}
             margin="normal"
           />
@@ -179,12 +208,12 @@ function VolunteerPage() {
             margin="normal"
           />
           <TextField
-            id="dateTime"
+            id="date"
             label="Date & Time"
             type="datetime-local"
             variant="outlined"
             fullWidth
-            value={eventDetails.dateTime}
+            value={eventDetails.date}
             onChange={handleInputChange}
             margin="normal"
             InputLabelProps={{
@@ -192,7 +221,7 @@ function VolunteerPage() {
             }}
           />
           <Button variant="contained" color="primary" onClick={handleEditEvent} sx={{ mt: 2, width: '100%' }}>
-            {eventDetails.id ? 'Save Changes' : 'Create'}
+            {eventDetails.eventId ? 'Save Changes' : 'Create'}
           </Button>
         </Container>
       </Modal>

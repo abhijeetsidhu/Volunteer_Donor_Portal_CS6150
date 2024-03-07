@@ -36,8 +36,8 @@ function Header() {
                 <img src={appIcon} alt="App Icon" style={{ width: '40px', height: '40px' }} />
               </IconButton>
             </Link>
-            <Button color="inherit" component={Link} to="/volunteer">Volunteer Now</Button>
-            <Button color="inherit" component={Link} to="/donate">Donate Now</Button>
+            <Button color="inherit" component={Link} to="/volunteer">BE PART OF THE CHANGE</Button>
+            <Button color="inherit" component={Link} to="/donate">SUPPORT US</Button>
             <Button color="inherit" component={Link} to="/about">About Us</Button>
           </Box>
           <div className="login-signup">
