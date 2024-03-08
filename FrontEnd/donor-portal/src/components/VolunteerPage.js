@@ -8,7 +8,7 @@ import EventServices from '../services/EventServices'; // Import EventServices m
 function VolunteerPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [eventDetails, setEventDetails] = useState({
-    eventId: '', // New field
+    eventId: '',
     eventName: '',
     description: '',
     location: '',
@@ -16,17 +16,18 @@ function VolunteerPage() {
   });
 
   const [upcomingEvents, setUpcomingEvents] = useState([]);
-
+  const [userRole, setUserRole] = useState('');
+  
   const volunteerAcknowledgement = [
     { id: 1, name: 'John Doe', role: 'Volunteer' },
     { id: 2, name: 'Jane Smith', role: 'Volunteer' },
     { id: 3, name: 'Michael Johnson', role: 'Volunteer' }
   ];
 
-  const userRole = 'Admin'; // or 'Staff'
-
   useEffect(() => {
     fetchEvents();
+    const storedUserRole = localStorage.getItem('userRole');
+    setUserRole(storedUserRole);
   }, []);
 
   const fetchEvents = async () => {
@@ -41,7 +42,7 @@ function VolunteerPage() {
   const handleOpenModal = (event) => {
     setIsModalOpen(true);
     setEventDetails({
-      eventId: event.eventId, // Set eventId
+      eventId: event.eventId,
       eventName: event.eventName,
       description: event.description,
       location: event.location,
@@ -52,7 +53,7 @@ function VolunteerPage() {
   const handleCloseModal = () => {
     setIsModalOpen(false);
     setEventDetails({
-      eventId: '', // Reset eventId
+      eventId: '',
       eventName: '',
       description: '',
       location: '',
@@ -78,7 +79,7 @@ function VolunteerPage() {
         console.log('Event created:', response);
       }
       handleCloseModal();
-      fetchEvents(); // Refetch events after creation or update
+      fetchEvents();
     } catch (error) {
       console.error('Error creating/editing event:', error);
     }
@@ -100,13 +101,12 @@ function VolunteerPage() {
       <Header />
       <Container maxWidth="lg">
         <br />
-        {/* Upcoming Events Section */}
         <section>
           <div style={{ display: 'flex', justifyContent: 'space-between' }}>
             <Typography variant="h4" gutterBottom>
               Upcoming Events
             </Typography>
-            {(userRole === 'Admin' || userRole === 'Staff') && (
+            {(userRole === 'ADMIN' || userRole === 'STAFF') && (
               <Button variant="contained" color="primary" onClick={() => setIsModalOpen(true)} style={{ marginBottom: '20px' }}>
                 Create Event
               </Button>
@@ -119,12 +119,16 @@ function VolunteerPage() {
                   <CardContent>
                     <Typography variant="h6">{event.eventName}</Typography>
                     <div style={{ position: 'absolute', top: '0', right: '0' }}>
-                      <IconButton onClick={() => handleOpenModal(event)} aria-label="edit">
-                        <EditIcon />
-                      </IconButton>
-                      <IconButton onClick={() => handleDeleteEvent(event.eventId)} aria-label="delete">
-                        <DeleteIcon />
-                      </IconButton>
+                      {(userRole === 'ADMIN' || userRole === 'STAFF') && (
+                        <>
+                          <IconButton onClick={() => handleOpenModal(event)} aria-label="edit">
+                            <EditIcon />
+                          </IconButton>
+                          <IconButton onClick={() => handleDeleteEvent(event.eventId)} aria-label="delete">
+                            <DeleteIcon />
+                          </IconButton>
+                        </>
+                      )}
                     </div>
                     <Typography variant="body1">Date & Time: {new Date(event.date).toLocaleString()}</Typography>
                     <Typography variant="body1">Location: {event.location}</Typography>
@@ -135,8 +139,6 @@ function VolunteerPage() {
             ))}
           </Grid>
         </section>
-
-        {/* Volunteer Acknowledgement Section */}
         <br />
         <section>
           <Typography variant="h4" gutterBottom>
@@ -155,7 +157,6 @@ function VolunteerPage() {
         </section>
       </Container>
 
-      {/* Event Creation/Edit Modal */}
       <Modal
         open={isModalOpen}
         onClose={handleCloseModal}
