@@ -68,25 +68,13 @@ function VolunteerPage() {
     }));
   };
 
-  // Inside handleEditEvent function where you create or update an event
   const handleEditEvent = async () => {
     try {
-      // Convert the date to ISO string format
-      const isoDate = new Date(eventDetails.date).toISOString();
-
-      if (eventDetails.id) {
-        // If it's an update, send eventId along with other details
-        const response = await EventServices.updateEvent(eventDetails.id, {
-          ...eventDetails,
-          date: isoDate // Use the ISO format date
-        });
+      if (eventDetails.eventId) {
+        const response = await EventServices.updateEvent(eventDetails.eventId, eventDetails);
         console.log('Event updated:', response);
       } else {
-        // If it's a new event, create it with ISO format date
-        const response = await EventServices.createEvent({
-          ...eventDetails,
-          date: isoDate // Use the ISO format date
-        });
+        const response = await EventServices.createEvent(eventDetails);
         console.log('Event created:', response);
       }
       handleCloseModal();
