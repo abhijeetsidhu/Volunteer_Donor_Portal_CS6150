@@ -35,7 +35,7 @@ function LoginPage() {
         // Store user information in local storage
         localStorage.setItem('isLoggedIn', true);
         localStorage.setItem('userRole', response.users[0].role);
-  
+        localStorage.setItem('userName', response.users[0].name);
         // Redirect to home page upon successful login
         navigate('/');
       } else if (response.logMessage === 'Incorrect Credentials: Email') {
