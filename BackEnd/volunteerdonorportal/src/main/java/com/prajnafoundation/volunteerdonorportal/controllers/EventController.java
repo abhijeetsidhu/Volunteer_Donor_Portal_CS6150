@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @RestController
@@ -31,21 +33,43 @@ public class EventController {
 
     @PostMapping
     public EventResponseObj createEvent(@RequestParam String eventName,
-                                        @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date date,
+                                        @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm") String date,
                                         @RequestParam String description,
                                         @RequestParam String location,
                                         @RequestParam(defaultValue = "0") int registrationHeadCount) {
-        return eventService.createEvent(eventName, date, description, location, registrationHeadCount);
+        // Parse the date string into a Date object if it's not null
+        Date parsedDate = null;
+        if (date != null) {
+            try {
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
+                parsedDate = dateFormat.parse(date);
+            } catch (ParseException e) {
+                // Handle parsing exception if necessary
+                e.printStackTrace();
+            }
+        }
+        return eventService.createEvent(eventName, parsedDate, description, location, registrationHeadCount);
     }
 
     @PutMapping
     public EventResponseObj updateEvent(@RequestParam Long eventId,
                                         @RequestParam(required = false) String eventName,
-                                        @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date date,
+                                        @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm") String date,
                                         @RequestParam(required = false) String description,
                                         @RequestParam(required = false) String location,
                                         @RequestParam(required = false) Integer registrationHeadCount) {
-        return eventService.updateEvent(eventId, eventName, date, description, location, registrationHeadCount);
+        // Parse the date string into a Date object if it's not null
+        Date parsedDate = null;
+        if (date != null) {
+            try {
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
+                parsedDate = dateFormat.parse(date);
+            } catch (ParseException e) {
+                // Handle parsing exception if necessary
+                e.printStackTrace();
+            }
+        }
+        return eventService.updateEvent(eventId, eventName, parsedDate, description, location, registrationHeadCount);
     }
 
     @DeleteMapping

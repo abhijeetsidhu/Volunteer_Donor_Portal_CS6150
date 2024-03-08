@@ -14,7 +14,7 @@ CREATE TABLE user_table (
 CREATE TABLE event_table (
     event_id SERIAL PRIMARY KEY,
     event_name VARCHAR NOT NULL,
-    date DATE,
+    date TIMESTAMP,
     description VARCHAR(250),
     location VARCHAR,
     registration_head_count INTEGER
@@ -69,11 +69,11 @@ VALUES
 
 INSERT INTO event_table (event_name, date, description, location, registration_head_count)
 VALUES
-  ('Event 1', '2024-03-15', 'Description for Event 1', 'Location 1', 3),
-  ('Event 2', '2024-04-20', 'Description for Event 2', 'Location 2', 2),
-  ('Event 3', '2024-05-10', 'Description for Event 3', 'Location 3', 3),
-  ('Event 4', '2024-06-05', 'Description for Event 4', 'Location 4', 5),
-  ('Event 5', '2024-07-15', 'Description for Event 5', 'Location 5', 1);
+    ('Event 1', '2024-03-15 09:00:00', 'Description for Event 1', 'Location 1', 3),
+    ('Event 2', '2024-04-20 10:30:00', 'Description for Event 2', 'Location 2', 2),
+    ('Event 3', '2024-05-10 13:15:00', 'Description for Event 3', 'Location 3', 3),
+    ('Event 4', '2024-06-05 16:45:00', 'Description for Event 4', 'Location 4', 5),
+    ('Event 5', '2024-07-15 18:00:00', 'Description for Event 5', 'Location 5', 1);
 
 INSERT INTO beneficiary_table (name, beneficiary_since_date, birth_date, gender)
 VALUES
