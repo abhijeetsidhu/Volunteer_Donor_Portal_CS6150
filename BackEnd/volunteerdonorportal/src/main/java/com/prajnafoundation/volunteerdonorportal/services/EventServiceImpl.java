@@ -166,7 +166,7 @@ public class EventServiceImpl implements EventService {
     @Override
     public EventResponseObj deleteEvent(Long eventId) {
         /*
-        TODO: Handle cases where a user is registered for an event.
+        TODO : Handle cases where a user is registered for an event.
           Deletion might result in referential integrity issues as the REGISTRATION table references
           both users and events.
          */
