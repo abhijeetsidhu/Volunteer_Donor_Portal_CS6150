@@ -7,6 +7,8 @@ import DonorPage from './components/DonorPage';
 import AboutMePage from './components/AboutMePage';
 import LoginPage from './components/LoginPage';
 import RegisterPage from './components/RegisterPage';
+import BeneficiaryPage from './components/BeneficiaryPage';
+import AdminManageRolesPage from './components/AdminManageRolesPage';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 function App() {
@@ -20,6 +22,8 @@ function App() {
           <Route path="/about" element={<AboutMePage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
+          <Route path="/beneficiary" element={<BeneficiaryPage />} />
+          <Route path="/admin" element={<AdminManageRolesPage />} />
         </Routes>
       </div>
     </Router>

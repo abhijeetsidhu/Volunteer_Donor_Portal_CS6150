@@ -56,7 +56,7 @@ public class UserController {
 
     @PostMapping
     public UserResponseObj createUser(@RequestParam String email, @RequestParam String password, @RequestParam String phoneNumber,
-                             @RequestParam String role, @RequestParam String name, @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date dob,
+                             @RequestParam String role, @RequestParam String name, @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date dob,
                              @RequestParam(required = false, defaultValue = "false") boolean emailNotification,
                              @RequestParam(required = false, defaultValue = "false") boolean whatsappNotification) {
         return userService.createUser(email, password, phoneNumber, role, name, dob, emailNotification, whatsappNotification);
