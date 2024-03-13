@@ -102,6 +102,7 @@ function RegisterPage() {
         // Set local storage upon successful sign up
         localStorage.setItem('isLoggedIn', true);
         localStorage.setItem('userRole', 'MEMBER'); // Assuming 'MEMBER' is a string value
+        localStorage.setItem('userName', updatedFormData.name);
         // Redirect to home page upon successful login
         navigate('/');
       } else {

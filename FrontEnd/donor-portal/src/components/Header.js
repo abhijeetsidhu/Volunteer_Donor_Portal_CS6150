@@ -19,9 +19,13 @@ function Header() {
     // Clear user information from local storage upon logout
     localStorage.removeItem('isLoggedIn');
     localStorage.removeItem('userRole');
+    localStorage.removeItem('userName')
     // Reload the page
     window.location.reload();
   };
+
+  const appUrl = "https://mgt-portal-team-webpage.web.app/";
+  const surveyLink = "https://docs.google.com/forms/d/e/1FAIpQLSdLvcprgAIrrEmWcGed--2vPMLXE2RirD94Ix1o4BrUzUETIQ/viewform?usp=sf_link"
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -50,6 +54,8 @@ function Header() {
             )}
           </Box>
           <div className="login-signup">
+            <Button color="inherit" href={appUrl} sx={{ color: '#101820', backgroundColor: '#FBEAEB', '&:hover': { backgroundColor: '#d81b60' } }}>Team Webpage</Button>
+            <Button color="inherit" href={surveyLink} sx={{ color: '#101820', backgroundColor: '#FBEAEB', '&:hover': { backgroundColor: '#d81b60' } }}>Survey</Button>
             {isLoggedIn ? (
               // Render logout button if user is logged in
               <>
