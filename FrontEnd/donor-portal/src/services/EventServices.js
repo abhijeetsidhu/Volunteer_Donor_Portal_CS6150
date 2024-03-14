@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-const BASE_URL = 'http://localhost:8080';
-// const BASE_URL = 'https://volunteerdonorportal-volunteerdonorportal.azuremicroservices.io';
+// const BASE_URL = 'http://localhost:8080';
+const BASE_URL = 'https://volunteerdonorportal-volunteerdonorportal.azuremicroservices.io';
 
 const EventServices = {
   getAllEvents: async () => {
